@@ -166,6 +166,15 @@ co %>% group_by(compname) %>%
          kable()
 ```
 
-```{r}
+```{r pressure}
+sl.list <- c('terracelake', 'emeraldlake', 'shadowlake', 'buttelake', 'juniperlake')
 
+# fetch and convert data into an SPC
+ls4 <- fetchOSD(sl.list)
+
+kssl.1 <- fetchKSSL('terracelake')
+kssl.2 <- fetchKSSL('emeraldlake')
+kssl.3 <- fetchKSSL('shadowlake')
+kssl.4 <- fetchKSSL('buttelake')
+kssl.5 <- fetchKSSL('juniperlake')
 ```

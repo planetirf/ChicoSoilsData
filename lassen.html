@@ -362,7 +362,7 @@ $(document).ready(function () {
 <h2>Code</h2>
 <pre class="r"><code>## load tidyverse
 library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
 ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
 ## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
@@ -374,7 +374,7 @@ library(tidyverse)</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
 <pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
 <pre><code>## Warning: package &#39;forcats&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## ── Conflicts ───────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ───────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>## load soilverse
@@ -749,6 +749,25 @@ x$effective.area &lt;- with(x, muacres * pct / 100)</code></pre>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>sl.list &lt;- c(&#39;terracelake&#39;, &#39;emeraldlake&#39;, &#39;shadowlake&#39;, &#39;buttelake&#39;, &#39;juniperlake&#39;)
+
+# fetch and convert data into an SPC
+ls4 &lt;- fetchOSD(sl.list)
+## terrace lake
+kssl.1 &lt;- fetchKSSL(&#39;terracelake&#39;)</code></pre>
+<pre><code>## query returned no data</code></pre>
+<pre class="r"><code>## emerald lake
+kssl.2 &lt;- fetchKSSL(&#39;emeraldlake&#39;)</code></pre>
+<pre><code>## 1 pedons loaded (0.02 Mb transferred)</code></pre>
+<pre class="r"><code>## shadow lake
+kssl.3 &lt;- fetchKSSL(&#39;shadowlake&#39;)</code></pre>
+<pre><code>## query returned no data</code></pre>
+<pre class="r"><code>## butte lake
+kssl.4 &lt;- fetchKSSL(&#39;buttelake&#39;)</code></pre>
+<pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
+<pre class="r"><code>## juniper lake
+kssl.5 &lt;- fetchKSSL(&#39;juniperlake&#39;)</code></pre>
+<pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
 </div>
 </div>
 
