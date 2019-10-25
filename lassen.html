@@ -360,8 +360,9 @@ $(document).ready(function () {
 </div>
 <div id="code" class="section level2">
 <h2>Code</h2>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────── tidyverse 1.2.1 ──</code></pre>
+<pre class="r"><code>## load tidyverse
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
 ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
 ## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
@@ -373,10 +374,44 @@ $(document).ready(function () {
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
 <pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
 <pre><code>## Warning: package &#39;forcats&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## ── Conflicts ────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ───────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>lassenSoils &lt;- read_csv(&quot;LassenSoilData.csv&quot;)</code></pre>
+<pre class="r"><code>## load soilverse
+library(aqp)</code></pre>
+<pre><code>## Warning: package &#39;aqp&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## This is aqp 1.17</code></pre>
+<pre><code>## 
+## Attaching package: &#39;aqp&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     slice, union</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     union</code></pre>
+<pre class="r"><code>library(soilDB)</code></pre>
+<pre><code>## Warning: package &#39;soilDB&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>library(plyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
+## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+## library(plyr); library(dplyr)</code></pre>
+<pre><code>## -------------------------------------------------------------------------</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     arrange, count, desc, failwith, id, mutate, rename, summarise,
+##     summarize</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     compact</code></pre>
+<pre class="r"><code>library(sharpshootR)
+library(knitr)</code></pre>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre class="r"><code>## import lassen soils data csv
+lassenSoils &lt;- read_csv(&quot;LassenSoilData.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   soilSeries = col_character(),
@@ -397,6 +432,324 @@ $(document).ready(function () {
 ##   p_retention = col_double(),
 ##   Al_half_Fe = col_double()
 ## )</code></pre>
+<div id="soil-aqp-and-dendrograms" class="section level3">
+<h3>Soil AQP and Dendrograms</h3>
+<pre class="r"><code>## add functions to work with soil AQP data
+# compute total component percentages for the current block of components
+f.sum &lt;- function(i) {
+   n &lt;- nrow(i) # number of rows
+   s &lt;- sum(i$comppct_r) # total component percent
+   return(data.frame(pct=s, n=n)) # return the results
+}
+
+# pick the largest suborder from within each map unit
+f.largest &lt;- function(i) {
+   i.sorted &lt;- i[order(i$pct, decreasing=TRUE), ] # sort largest -&gt; smallest
+   top.suborder &lt;- i.sorted$taxsuborder[1] # get the largest suborder
+   top.suborder.pct &lt;- i.sorted$pct[1] # get the the corresponding component percent
+   return(data.frame(suborder=top.suborder, pct=top.suborder.pct)) # return results
+}</code></pre>
+<pre class="r"><code>## Query data from soilweb API
+
+
+# get map unit-level data
+q.1 &lt;- &quot;SELECT mukey, muacres
+FROM legend
+INNER JOIN mapunit ON mapunit.lkey = legend.lkey
+WHERE legend.areasymbol = &#39;CA789&#39;&quot;
+
+# get component-level data
+q.2 &lt;- &quot;SELECT 
+component.mukey, cokey, comppct_r, compname, taxclname, taxorder, taxsuborder, taxgrtgroup, taxsubgrp
+FROM legend
+INNER JOIN mapunit ON mapunit.lkey = legend.lkey
+LEFT OUTER JOIN component ON component.mukey = mapunit.mukey
+WHERE legend.areasymbol = &#39;CA789&#39;&quot;
+
+# submit queries
+mu &lt;- SDA_query(q.1)
+co &lt;- SDA_query(q.2)
+
+# tabulate percentage of suborder-level taxa within each map unit (mukey)
+l &lt;- comp.suborder.sums &lt;- ddply(co, .(mukey, taxsuborder), f.sum)
+
+# keep the largest suborder, and its associated total percentage
+comp.suborder &lt;- ddply(l, .(mukey), f.largest)
+
+# join the largest suborder (by map unit) to mu
+x &lt;- join(mu, comp.suborder, by=&#39;mukey&#39;)
+
+# get an effective map unit area via: muacres * pct/100
+x$effective.area &lt;- with(x, muacres * pct / 100)</code></pre>
+<pre class="r"><code>sort(round(tapply(x$effective.area, x$suborder, sum)))</code></pre>
+<pre><code>##  Aquents  Aquands Fluvents  Aquepts  Xerepts Orthents  Cryands  Xerands 
+##       72      359      798     1636     3715     4628    16191    71778</code></pre>
+<pre class="r"><code>co %&gt;% group_by(compname) %&gt;% 
+         dplyr::summarise(n=n()) %&gt;% 
+         kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">compname</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Acroph</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Aeric Endoaquents</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Andic Durixerepts</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Cryaquents</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquandic Endoaquepts</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Humaquepts</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquepts</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">Aquic Dystroxerepts</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquic Haploxerands</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Ashbutte</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Badgerflat</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Badgerwash</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Badland</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Beaches</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Bearrubble</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Brokeoff</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Buttelake</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Buttewash</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Cascadesprings</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Cenplat</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Chaos</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cinder land</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cragwash</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Diamondpeak</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Dittmar</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Duric Vitraquands</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Emeraldlake</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Endoaquepts</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Histic Humaquepts</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Humic Haploxerands</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">Humic Xeric Vitricryands</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Juniperlake</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Kingsiron</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Lava flows</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Prospectpeak</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Readingpeak</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Riverwash</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Rock outcrop</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="left">Rubble land</td>
+<td align="right">25</td>
+</tr>
+<tr class="even">
+<td align="left">Scoured</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Shadowlake</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Sueredo</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">Summertown</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Sunhoff</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Talved</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Terracelake</td>
+<td align="right">16</td>
+</tr>
+<tr class="odd">
+<td align="left">Terric Haplohemists</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Dystroxerepts</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Endoaquands</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Endoaquents</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Haploxerands</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Petraquepts</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Psammaquents</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Vitrixerands</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Vitrixerands,</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Xerorthents</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Cryofluvents</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Cryorthents</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Xerofluvents</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Xerorthents</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrixerands</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Water</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Xeric Vitricryands</td>
+<td align="right">14</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 <p>Copyright &copy; 2019 Irfcorp, Inc. All rights reserved.</p>

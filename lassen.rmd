@@ -77,10 +77,20 @@ methods were not employed to validate observations due to time constraints.
 ## Code 
 
 ```{r}
+## load tidyverse
 library(tidyverse)
+
+## load soilverse
+library(aqp)
+library(soilDB)
+library(plyr)
+library(sharpshootR)
+library(knitr)
+library(dplyr)
 ```
 
 ```{r}
+## import lassen soils data csv
 lassenSoils <- read_csv("LassenSoilData.csv")
 ```
 
@@ -91,17 +101,69 @@ lassenSoils <- read_csv("LassenSoilData.csv")
 ```{r}
 
 ```
-
+### Soil AQP and Dendrograms
 ```{r}
+## add functions to work with soil AQP data
+# compute total component percentages for the current block of components
+f.sum <- function(i) {
+   n <- nrow(i) # number of rows
+   s <- sum(i$comppct_r) # total component percent
+   return(data.frame(pct=s, n=n)) # return the results
+}
+
+# pick the largest suborder from within each map unit
+f.largest <- function(i) {
+   i.sorted <- i[order(i$pct, decreasing=TRUE), ] # sort largest -> smallest
+   top.suborder <- i.sorted$taxsuborder[1] # get the largest suborder
+   top.suborder.pct <- i.sorted$pct[1] # get the the corresponding component percent
+   return(data.frame(suborder=top.suborder, pct=top.suborder.pct)) # return results
+}
 
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+## Query data from soilweb API
+
+
+# get map unit-level data
+q.1 <- "SELECT mukey, muacres
+FROM legend
+INNER JOIN mapunit ON mapunit.lkey = legend.lkey
+WHERE legend.areasymbol = 'CA789'"
+
+# get component-level data
+q.2 <- "SELECT 
+component.mukey, cokey, comppct_r, compname, taxclname, taxorder, taxsuborder, taxgrtgroup, taxsubgrp
+FROM legend
+INNER JOIN mapunit ON mapunit.lkey = legend.lkey
+LEFT OUTER JOIN component ON component.mukey = mapunit.mukey
+WHERE legend.areasymbol = 'CA789'"
+
+# submit queries
+mu <- SDA_query(q.1)
+co <- SDA_query(q.2)
+
+# tabulate percentage of suborder-level taxa within each map unit (mukey)
+l <- comp.suborder.sums <- ddply(co, .(mukey, taxsuborder), f.sum)
+
+# keep the largest suborder, and its associated total percentage
+comp.suborder <- ddply(l, .(mukey), f.largest)
+
+# join the largest suborder (by map unit) to mu
+x <- join(mu, comp.suborder, by='mukey')
+
+# get an effective map unit area via: muacres * pct/100
+x$effective.area <- with(x, muacres * pct / 100)
+
 
 ```
 
-```{r}
+```{r cars}
+sort(round(tapply(x$effective.area, x$suborder, sum)))
 
+co %>% group_by(compname) %>% 
+         dplyr::summarise(n=n()) %>% 
+         kable()
 ```
 
 ```{r}
