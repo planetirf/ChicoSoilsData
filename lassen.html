@@ -749,25 +749,1104 @@ x$effective.area &lt;- with(x, muacres * pct / 100)</code></pre>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>p &lt;- sort(round(tapply(x$muacres, x$suborder, sum)))
+p</code></pre>
+<pre><code>##  Aquents  Aquands Fluvents  Aquepts  Xerepts Orthents  Cryands  Xerands 
+##      145      449     1108     1914     4559     5505    23183    83454</code></pre>
+<pre class="r"><code>## attempt to make some summary stats for 
+
+co %&gt;% group_by(compname) %&gt;% 
+         dplyr::summarise( 
+                   n=n(),
+        n_d=n_distinct(taxorder)) %&gt;% 
+         kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">compname</th>
+<th align="right">n</th>
+<th align="right">n_d</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Acroph</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aeric Endoaquents</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Andic Durixerepts</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Cryaquents</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquandic Endoaquepts</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Humaquepts</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquepts</td>
+<td align="right">20</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquic Dystroxerepts</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquic Haploxerands</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ashbutte</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Badgerflat</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Badgerwash</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Badland</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Beaches</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Bearrubble</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Brokeoff</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Buttelake</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Buttewash</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cascadesprings</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cenplat</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Chaos</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cinder land</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cragwash</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Diamondpeak</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Dittmar</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Duric Vitraquands</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Emeraldlake</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Endoaquepts</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Histic Humaquepts</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Humic Haploxerands</td>
+<td align="right">19</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Humic Xeric Vitricryands</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Juniperlake</td>
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Kingsiron</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Lava flows</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Prospectpeak</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Readingpeak</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Riverwash</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Rock outcrop</td>
+<td align="right">42</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Rubble land</td>
+<td align="right">25</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Scoured</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Shadowlake</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Sueredo</td>
+<td align="right">11</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Summertown</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Sunhoff</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Talved</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Terracelake</td>
+<td align="right">16</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Terric Haplohemists</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Dystroxerepts</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Endoaquands</td>
+<td align="right">11</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Endoaquents</td>
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Haploxerands</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Petraquepts</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Psammaquents</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Vitrixerands</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Vitrixerands,</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Xerorthents</td>
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Cryofluvents</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Cryorthents</td>
+<td align="right">11</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Xerofluvents</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Xerorthents</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrixerands</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Water</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Xeric Vitricryands</td>
+<td align="right">14</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>co %&gt;% group_by(taxorder) %&gt;% 
+         dplyr::summarise( 
+                   n=n(),
+        n_d=n_distinct(taxgrtgroup)) %&gt;% 
+         kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">taxorder</th>
+<th align="right">n</th>
+<th align="right">n_d</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="right">187</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="right">56</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Histosols</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Inceptisols</td>
+<td align="right">50</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">78</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>co %&gt;% group_by(compname) %&gt;% 
+         dplyr::summarise( 
+                   n=n()) %&gt;% 
+         kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">compname</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Acroph</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Aeric Endoaquents</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Andic Durixerepts</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Cryaquents</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquandic Endoaquepts</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquandic Humaquepts</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquepts</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">Aquic Dystroxerepts</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquic Haploxerands</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Ashbutte</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Badgerflat</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Badgerwash</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Badland</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Beaches</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Bearrubble</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Brokeoff</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Buttelake</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Buttewash</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Cascadesprings</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Cenplat</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Chaos</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cinder land</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Cragwash</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Diamondpeak</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Dittmar</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Duric Vitraquands</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Emeraldlake</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Endoaquepts</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Histic Humaquepts</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Humic Haploxerands</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">Humic Xeric Vitricryands</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Juniperlake</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Kingsiron</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Lava flows</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Prospectpeak</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Readingpeak</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Riverwash</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Rock outcrop</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="left">Rubble land</td>
+<td align="right">25</td>
+</tr>
+<tr class="even">
+<td align="left">Scoured</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Shadowlake</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Sueredo</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">Summertown</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Sunhoff</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Talved</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Terracelake</td>
+<td align="right">16</td>
+</tr>
+<tr class="odd">
+<td align="left">Terric Haplohemists</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Dystroxerepts</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Endoaquands</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Endoaquents</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Haploxerands</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Petraquepts</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Psammaquents</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Vitrixerands</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Typic Vitrixerands,</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Typic Xerorthents</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Cryofluvents</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Cryorthents</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrandic Xerofluvents</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Vitrandic Xerorthents</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitrixerands</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Water</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Xeric Vitricryands</td>
+<td align="right">14</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>co %&gt;% filter(!is.na(taxgrtgroup)) %&gt;% group_by(taxorder, taxsuborder, taxgrtgroup) %&gt;% 
+         dplyr::summarise( n_d=n_distinct(taxgrtgroup),
+                   n=n()) %&gt;% 
+         kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">taxorder</th>
+<th align="left">taxsuborder</th>
+<th align="left">taxgrtgroup</th>
+<th align="right">n_d</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="left">Aquands</td>
+<td align="left">Endoaquands</td>
+<td align="right">1</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Andisols</td>
+<td align="left">Aquands</td>
+<td align="left">Vitraquands</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="left">Cryands</td>
+<td align="left">Vitricryands</td>
+<td align="right">1</td>
+<td align="right">56</td>
+</tr>
+<tr class="even">
+<td align="left">Andisols</td>
+<td align="left">Xerands</td>
+<td align="left">Haploxerands</td>
+<td align="right">1</td>
+<td align="right">53</td>
+</tr>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="left">Xerands</td>
+<td align="left">Vitrixerands</td>
+<td align="right">1</td>
+<td align="right">64</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Aquents</td>
+<td align="left">Cryaquents</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Entisols</td>
+<td align="left">Aquents</td>
+<td align="left">Endoaquents</td>
+<td align="right">1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Aquents</td>
+<td align="left">Psammaquents</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Entisols</td>
+<td align="left">Fluvents</td>
+<td align="left">Cryofluvents</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Fluvents</td>
+<td align="left">Xerofluvents</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Entisols</td>
+<td align="left">Orthents</td>
+<td align="left">Cryorthents</td>
+<td align="right">1</td>
+<td align="right">17</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Orthents</td>
+<td align="left">Xerorthents</td>
+<td align="right">1</td>
+<td align="right">18</td>
+</tr>
+<tr class="odd">
+<td align="left">Histosols</td>
+<td align="left">Hemists</td>
+<td align="left">Haplohemists</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Inceptisols</td>
+<td align="left">Aquepts</td>
+<td align="left">Endoaquepts</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Inceptisols</td>
+<td align="left">Aquepts</td>
+<td align="left">Humaquepts</td>
+<td align="right">1</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="left">Inceptisols</td>
+<td align="left">Aquepts</td>
+<td align="left">Petraquepts</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Inceptisols</td>
+<td align="left">Xerepts</td>
+<td align="left">Durixerepts</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Inceptisols</td>
+<td align="left">Xerepts</td>
+<td align="left">Dystroxerepts</td>
+<td align="right">1</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>co %&gt;% group_by(taxorder, taxsuborder) %&gt;% 
+         dplyr::summarise(
+                   n=n(),
+                   n_d=n_distinct(taxgrtgroup)) %&gt;%
+    kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">taxorder</th>
+<th align="left">taxsuborder</th>
+<th align="right">n</th>
+<th align="right">n_d</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="left">Aquands</td>
+<td align="right">14</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Andisols</td>
+<td align="left">Cryands</td>
+<td align="right">56</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Andisols</td>
+<td align="left">Xerands</td>
+<td align="right">117</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Aquents</td>
+<td align="right">13</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Entisols</td>
+<td align="left">Fluvents</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Entisols</td>
+<td align="left">Orthents</td>
+<td align="right">35</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Histosols</td>
+<td align="left">Hemists</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Inceptisols</td>
+<td align="left">Aquepts</td>
+<td align="right">41</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Inceptisols</td>
+<td align="left">Xerepts</td>
+<td align="right">9</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">78</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## set to new variable:
+
+t &lt;- co %&gt;% group_by(taxorder, taxsuborder) %&gt;% 
+         dplyr::summarise( 
+                   n=n() )
+
+ 
+ x %&gt;% group_by(suborder) %&gt;% 
+         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
+                   mean=mean(muacres, na.rm = TRUE),
+                   n=n()) %&gt;% 
+         kable()</code></pre>
+<pre><code>## Warning: Factor `suborder` contains implicit NA, consider using
+## `forcats::fct_explicit_na`</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">suborder</th>
+<th align="right">sum</th>
+<th align="right">mean</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Xerands</td>
+<td align="right">83454</td>
+<td align="right">2318.1667</td>
+<td align="right">36</td>
+</tr>
+<tr class="even">
+<td align="left">Orthents</td>
+<td align="right">5505</td>
+<td align="right">688.1250</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Cryands</td>
+<td align="right">23183</td>
+<td align="right">1545.5333</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">Aquepts</td>
+<td align="right">1914</td>
+<td align="right">478.5000</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Xerepts</td>
+<td align="right">4559</td>
+<td align="right">1519.6667</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Fluvents</td>
+<td align="right">1108</td>
+<td align="right">369.3333</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquands</td>
+<td align="right">449</td>
+<td align="right">449.0000</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquents</td>
+<td align="right">145</td>
+<td align="right">72.5000</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">6403</td>
+<td align="right">1067.1667</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>x %&gt;% group_by(suborder) %&gt;% 
+         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
+                   mean=mean(muacres, na.rm = TRUE),
+                   n=n()) %&gt;%
+  kable()</code></pre>
+<pre><code>## Warning: Factor `suborder` contains implicit NA, consider using
+## `forcats::fct_explicit_na`</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">suborder</th>
+<th align="right">sum</th>
+<th align="right">mean</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Xerands</td>
+<td align="right">83454</td>
+<td align="right">2318.1667</td>
+<td align="right">36</td>
+</tr>
+<tr class="even">
+<td align="left">Orthents</td>
+<td align="right">5505</td>
+<td align="right">688.1250</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Cryands</td>
+<td align="right">23183</td>
+<td align="right">1545.5333</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">Aquepts</td>
+<td align="right">1914</td>
+<td align="right">478.5000</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Xerepts</td>
+<td align="right">4559</td>
+<td align="right">1519.6667</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Fluvents</td>
+<td align="right">1108</td>
+<td align="right">369.3333</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquands</td>
+<td align="right">449</td>
+<td align="right">449.0000</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Aquents</td>
+<td align="right">145</td>
+<td align="right">72.5000</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">6403</td>
+<td align="right">1067.1667</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>kable(addmargins(table(co$taxsuborder)))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Var1</th>
+<th align="right">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Aquands</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="left">Aquents</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquepts</td>
+<td align="right">41</td>
+</tr>
+<tr class="even">
+<td align="left">Cryands</td>
+<td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">Fluvents</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Hemists</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Orthents</td>
+<td align="right">35</td>
+</tr>
+<tr class="even">
+<td align="left">Xerands</td>
+<td align="right">117</td>
+</tr>
+<tr class="odd">
+<td align="left">Xerepts</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">Sum</td>
+<td align="right">294</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>sl.list &lt;- c(&#39;terracelake&#39;, &#39;emeraldlake&#39;, &#39;shadowlake&#39;, &#39;buttelake&#39;, &#39;juniperlake&#39;)
 
 # fetch and convert data into an SPC
-ls4 &lt;- fetchOSD(sl.list)
-## terrace lake
+sl &lt;- fetchOSD(sl.list)
+
 kssl.1 &lt;- fetchKSSL(&#39;terracelake&#39;)</code></pre>
 <pre><code>## query returned no data</code></pre>
-<pre class="r"><code>## emerald lake
-kssl.2 &lt;- fetchKSSL(&#39;emeraldlake&#39;)</code></pre>
+<pre class="r"><code>kssl.2 &lt;- fetchKSSL(&#39;emeraldlake&#39;)</code></pre>
 <pre><code>## 1 pedons loaded (0.02 Mb transferred)</code></pre>
-<pre class="r"><code>## shadow lake
-kssl.3 &lt;- fetchKSSL(&#39;shadowlake&#39;)</code></pre>
+<pre class="r"><code>kssl.3 &lt;- fetchKSSL(&#39;shadowlake&#39;)</code></pre>
 <pre><code>## query returned no data</code></pre>
-<pre class="r"><code>## butte lake
-kssl.4 &lt;- fetchKSSL(&#39;buttelake&#39;)</code></pre>
+<pre class="r"><code>kssl.4 &lt;- fetchKSSL(&#39;buttelake&#39;)</code></pre>
 <pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
-<pre class="r"><code>## juniper lake
-kssl.5 &lt;- fetchKSSL(&#39;juniperlake&#39;)</code></pre>
+<pre class="r"><code>kssl.5 &lt;- fetchKSSL(&#39;juniperlake&#39;)</code></pre>
 <pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
+<pre class="r"><code>g &lt;- rbind(kssl.2, kssl.4, kssl.5)</code></pre>
+<pre><code>## Warning: &#39;rbind&#39; is deprecated.
+## Use &#39;please use union()&#39; instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
+<pre class="r"><code>table(g$taxmoistscl)</code></pre>
+<pre><code>## &lt; table of extent 0 &gt;</code></pre>
+<pre class="r"><code>g$taxonname &lt;- toupper(g$taxonname)
+
+par(mar=c(1,1,4,3))
+groupedProfilePlot(g, groups = &#39;taxorder&#39;, name=&#39;hzn_desgn&#39;,color=&#39;color&#39;, label=&#39;taxonname&#39;, id.style=&#39;side&#39;)</code></pre>
+<p><img src="lassen_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>plot(sl, groups = &#39;taxorder&#39;, name=&#39;hzname&#39;, cex.names=0.65, axis.line.offset=-5)</code></pre>
+<p><img src="lassen_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<pre class="r"><code>plot(g, label = &#39;taxonname&#39;,name=&#39;hzn_desgn&#39;, color=&#39;moist_soil_color&#39;)</code></pre>
+<p><img src="lassen_files/figure-html/unnamed-chunk-11-3.png" width="672" /></p>
 </div>
 </div>
 

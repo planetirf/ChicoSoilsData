@@ -166,15 +166,97 @@ co %>% group_by(compname) %>%
          kable()
 ```
 
+```{r}
+
+p <- sort(round(tapply(x$muacres, x$suborder, sum)))
+p
+```
+
+
+```{r}
+
+## attempt to make some summary stats for 
+
+co %>% group_by(compname) %>% 
+         dplyr::summarise( 
+                   n=n(),
+        n_d=n_distinct(taxorder)) %>% 
+         kable()
+
+co %>% group_by(taxorder) %>% 
+         dplyr::summarise( 
+                   n=n(),
+        n_d=n_distinct(taxgrtgroup)) %>% 
+         kable()
+
+
+co %>% group_by(compname) %>% 
+         dplyr::summarise( 
+                   n=n()) %>% 
+         kable()
+
+
+co %>% filter(!is.na(taxgrtgroup)) %>% group_by(taxorder, taxsuborder, taxgrtgroup) %>% 
+         dplyr::summarise( n_d=n_distinct(taxgrtgroup),
+                   n=n()) %>% 
+         kable()
+
+co %>% group_by(taxorder, taxsuborder) %>% 
+         dplyr::summarise(
+                   n=n(),
+                   n_d=n_distinct(taxgrtgroup)) %>%
+    kable()
+```
+
+```{r}
+
+## set to new variable:
+
+t <- co %>% group_by(taxorder, taxsuborder) %>% 
+         dplyr::summarise( 
+                   n=n() )
+
+ 
+ x %>% group_by(suborder) %>% 
+         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
+                   mean=mean(muacres, na.rm = TRUE),
+                   n=n()) %>% 
+         kable()
+ 
+x %>% group_by(suborder) %>% 
+         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
+                   mean=mean(muacres, na.rm = TRUE),
+                   n=n()) %>%
+  kable()
+```
+```{r}
+kable(addmargins(table(co$taxsuborder)))
+```
+
 ```{r pressure}
 sl.list <- c('terracelake', 'emeraldlake', 'shadowlake', 'buttelake', 'juniperlake')
 
 # fetch and convert data into an SPC
-ls4 <- fetchOSD(sl.list)
+sl <- fetchOSD(sl.list)
 
 kssl.1 <- fetchKSSL('terracelake')
 kssl.2 <- fetchKSSL('emeraldlake')
 kssl.3 <- fetchKSSL('shadowlake')
 kssl.4 <- fetchKSSL('buttelake')
 kssl.5 <- fetchKSSL('juniperlake')
+```
+
+```{r}
+g <- rbind(kssl.2, kssl.4, kssl.5)
+table(g$taxmoistscl)
+
+g$taxonname <- toupper(g$taxonname)
+
+par(mar=c(1,1,4,3))
+groupedProfilePlot(g, groups = 'taxorder', name='hzn_desgn',color='color', label='taxonname', id.style='side')
+
+
+plot(sl, groups = 'taxorder', name='hzname', cex.names=0.65, axis.line.offset=-5)
+plot(g, label = 'taxonname',name='hzn_desgn', color='moist_soil_color')
+
 ```
