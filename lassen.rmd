@@ -46,3 +46,64 @@ mechanisms of pedogenesis of soils in Lassen Volcanic National Park becomes clea
 of less common soils such an Andisols. The objectives of this research is to
 i) Learn about soil property relationships in Lassen Volcanic National Park Andisols
 ii) Evaluate the soil survey data and information available and methods of use
+
+## Methods
+
+Soils in Lassen National Park were explored digitally through the use of SoilWeb to identify
+potential trends and series to access data and gather more information about (Beaudette et al.,
+2009). The soil Terracelake, Emeraldlake, Shadowlake, Juniperlake, and Buttelake series were
+chosen as a subset of series to explore mostly to do the similarities of the “-lake” in their
+naming structure. Four of the five soils are classified as Andisols, with Emeraldlake classified as
+an Entisol with andic properties. The inclusion of a non Andisol soil may also serve as a subtle
+contrast between the breakouts of an Andisol and an Entisol with Vitrandic properties (Table 5).
+The soil datamart was accessed for soil series chemical data but did not have lab data for the
+most of the soil series to be investigated. Soilweb provided access to soil taxonomy, physical
+and some chemical data (horzons, particle size fractions, % organic matter, pH, CEC, and bulk
+density) available (Table 5,6). The NRCS Soil Survey published in 2010 and was consulted to find
+Andisol specific chemical information (NaF pH, %glass, P retention, and Al +1/2 Fe) and
+appended to data found from the soil web database (Table 6)(Soil Survey, 2010). Soil chemical
+and physical relationships such as were graphed in excel using the the data previously
+organized (Figures 1-7).
+
+Soil survey information from the CA078 survey area was queried from the NRCS Soil Data access
+pathway with built in methods from the soilAQP package and used to create soil taxonomy and
+map unit inclusion information in tables 1 – 4. Soil series profile sketches and dendrograms,
+which show taxonomic relationships between series, were developed using the soilAQP
+package as well (Figures 8 - 11) (Beaudette et al., 2013, Soil Survey, 2019).
+
+The tables and graphs were analyzed for basic observable relationships and trends, statistical
+methods were not employed to validate observations due to time constraints.
+
+## Code 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+lassenSoils <- read_csv("LassenSoilData.csv")
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```

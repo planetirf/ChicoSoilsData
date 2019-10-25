@@ -302,7 +302,7 @@ $(document).ready(function () {
       <a href="page-a.html">Rad Lab</a>
     </li>
     <li>
-      <a href="Lassen.html">Lasseen Soils</a>
+      <a href="Lassen.html">Lassen Soils</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Ceramics</li>
@@ -344,7 +344,60 @@ $(document).ready(function () {
 </div>
 
 
-
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Understanding the basic concepts of soil formation and genesis applied across landscapes is difficult, it requires traversing the landscape and lots of digging or researching soil survey maps. Finding, organizing, exploring and interpreting NRCS soil survey maps and data is a process which consumes a lot of time and has evolved through the years from a strict physical format into flexible digital formats. However, just because something is in a new digital format does not always make the job easier as often times digital formats are stored in multiple online databases and hosted with different web services.</p>
+<p>The tools available from the NRCS include very large and robust yet clunky web soil survey app (<a href="https://websoilsurvey.sc.egov.usda.gov/App/WebSoilSurvey.aspx" class="uri">https://websoilsurvey.sc.egov.usda.gov/App/WebSoilSurvey.aspx</a>), the soil data access portal (<a href="https://sdmdataaccess.nrcs.usda.gov/" class="uri">https://sdmdataaccess.nrcs.usda.gov/</a>) offers links to backend SQL services and web queryable data from the data mart (<a href="https://ncsslabdatamart.sc.egov.usda.gov/" class="uri">https://ncsslabdatamart.sc.egov.usda.gov/</a>) (Soil Survey, 2019). The California resource soil lab at UC Davis has built a few higher level services to make this process easier such as the SoilWeb apps (<a href="https://casoilresource.lawr.ucdavis.edu/soilweb-apps/" class="uri">https://casoilresource.lawr.ucdavis.edu/soilweb-apps/</a>) (Beaudette et al., 2009). Additionally, climate and meteorological information in stored in other databases which are accessed separately and must be joined with previous soil data resources.</p>
+<p>While the sheer access to raw data and information is enormous it takes a considerable amount of time to organize, clean, and produce usable graphics from. There has been considerable work in trying to simplify and improve workflow programmatically by the National Cooperative Soil Survey. The algorithms for quantitative pedology package (soilAQP) for the R programming language provides build in functions for querying, organizing, cleaning and producing tables graphs from the multitudes of NRCS soil survey data available, as well as methods for querying meteorological data (Beaudette et al., 2013) However, this requires an intermediate to advanced knowledge of the R programming language as well as knowledge of querying databases with SQL (R Core Team, 2013).</p>
+<p>A simple and more direct method can be employed by referencing the paper copies of the soil surveys produced by the NRCS, which are now also available in electronic PDF format and contain most of the information required by a soil scientist to explore and learn about a new and different landscapes in the United States.</p>
+<p>If a curious soil scientist in potentia desired to learn more about the soils in the Cascade Range of California north of the Sierra Nevada, Lassen Volcanic National Park seems like a good place to start. Lassen Volcanic National Park is home to all 4 volcano types (cinder cone, plug dome, shield, and stratovolcano). When coupled with other soil forming factors (climate, topography, organics, time), the potential for an innovative and engaging opportunity for understanding mechanisms of pedogenesis of soils in Lassen Volcanic National Park becomes clear especially of less common soils such an Andisols. The objectives of this research is to i) Learn about soil property relationships in Lassen Volcanic National Park Andisols ii) Evaluate the soil survey data and information available and methods of use</p>
+</div>
+<div id="methods" class="section level2">
+<h2>Methods</h2>
+<p>Soils in Lassen National Park were explored digitally through the use of SoilWeb to identify potential trends and series to access data and gather more information about (Beaudette et al., 2009). The soil Terracelake, Emeraldlake, Shadowlake, Juniperlake, and Buttelake series were chosen as a subset of series to explore mostly to do the similarities of the “-lake” in their naming structure. Four of the five soils are classified as Andisols, with Emeraldlake classified as an Entisol with andic properties. The inclusion of a non Andisol soil may also serve as a subtle contrast between the breakouts of an Andisol and an Entisol with Vitrandic properties (Table 5). The soil datamart was accessed for soil series chemical data but did not have lab data for the most of the soil series to be investigated. Soilweb provided access to soil taxonomy, physical and some chemical data (horzons, particle size fractions, % organic matter, pH, CEC, and bulk density) available (Table 5,6). The NRCS Soil Survey published in 2010 and was consulted to find Andisol specific chemical information (NaF pH, %glass, P retention, and Al +1/2 Fe) and appended to data found from the soil web database (Table 6)(Soil Survey, 2010). Soil chemical and physical relationships such as were graphed in excel using the the data previously organized (Figures 1-7).</p>
+<p>Soil survey information from the CA078 survey area was queried from the NRCS Soil Data access pathway with built in methods from the soilAQP package and used to create soil taxonomy and map unit inclusion information in tables 1 – 4. Soil series profile sketches and dendrograms, which show taxonomic relationships between series, were developed using the soilAQP package as well (Figures 8 - 11) (Beaudette et al., 2013, Soil Survey, 2019).</p>
+<p>The tables and graphs were analyzed for basic observable relationships and trends, statistical methods were not employed to validate observations due to time constraints.</p>
+</div>
+<div id="code" class="section level2">
+<h2>Code</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
+## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;forcats&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## ── Conflicts ────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>lassenSoils &lt;- read_csv(&quot;LassenSoilData.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   soilSeries = col_character(),
+##   soilTaxonomy = col_character(),
+##   top = col_double(),
+##   bottom = col_double(),
+##   miid = col_double(),
+##   Hzn = col_character(),
+##   clay_pct = col_double(),
+##   sand_pct = col_double(),
+##   om_pct = col_double(),
+##   ph = col_double(),
+##   CEC = col_double(),
+##   bulkDensity = col_double(),
+##   NaF = col_double(),
+##   baseSat = col_double(),
+##   glass_pct = col_double(),
+##   p_retention = col_double(),
+##   Al_half_Fe = col_double()
+## )</code></pre>
+</div>
 
 <p>Copyright &copy; 2019 Irfcorp, Inc. All rights reserved.</p>
 
