@@ -76,10 +76,60 @@ methods were not employed to validate observations due to time constraints.
 
 ## Code 
 
-```{r}
+
+```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
+
 ## load tidyverse
 library(tidyverse)
 
+```
+
+```{r}
+## import lassen soils data csv
+lassenSoils <- read_csv("LassenSoilData.csv")
+```
+
+```{r}
+## CEC at pH 7 and soil pH
+
+ggplot(data = lassenSoils) +
+  geom_point(mapping = aes(x = ph, y = CEC, color=soilSeries))
+```
+
+```{r}
+## CEC at pH 7 and percent clay
+
+ggplot(data = lassenSoils) +
+  geom_point(mapping = aes(x = clay_pct, y = CEC, color=soilSeries))
+```
+
+```{r}
+## CEC at pH 7 and organic matter21 clay
+
+ggplot(data = lassenSoils) +
+  geom_point(mapping = aes(x = om_pct, y = CEC, color=soilSeries)) +
+  coord_cartesian(xlim = c(0, 25))
+```
+
+```{r}
+## CEC at pH 7 and percent clay
+
+ggplot(data = lassenSoils) +
+  geom_point(mapping = aes(x = om_pct, y = CEC, color=soilSeries))  +
+  coord_cartesian(xlim = c(0, 25))
+
+```
+
+```{r}
+## CEC change with Depth
+
+ggplot(data = lassenSoils) +
+  geom_point(mapping = aes(x = CEC, y = miid, color=soilSeries)) +
+  scale_y_reverse()
+```
+
+```{r}
 ## load soilverse
 library(aqp)
 library(soilDB)
@@ -89,16 +139,11 @@ library(knitr)
 library(dplyr)
 ```
 
-```{r}
-## import lassen soils data csv
-lassenSoils <- read_csv("LassenSoilData.csv")
-```
+
 
 ```{r}
 
-```
 
-```{r}
 
 ```
 ### Soil AQP and Dendrograms
@@ -260,3 +305,108 @@ plot(sl, groups = 'taxorder', name='hzname', cex.names=0.65, axis.line.offset=-5
 plot(g, label = 'taxonname',name='hzn_desgn', color='moist_soil_color')
 
 ```
+
+
+```{r}
+
+# estimate soil depth based on horizon designation
+sl$soil.depth <- profileApply(sl, estimateSoilDepth, name='hzname', top='top', bottom='bottom')
+
+# plot profiles, order by soil depth
+png("lassen_lake_order.png", width=1200, height=800, pointsize=33)
+par(mar=c(0,0,0,0))
+plot(sl, name='hzname', cex.names=0.65, axis.line.offset=-5)
+
+# plot dendrogram + profiles
+png("lassen_lake_dendrogram.png", width=1200, height=800, pointsize=33)
+SoilTaxonomyDendrogram(sl, cex.taxon.labels=0.8)
+
+```
+
+```{r}
+sx.list <- c('acroph', 'cragwash', 'buttewash', 'badgerflat', 'cenplat', 'dittmar', 'bearrubble', 'ashbutte','badgerwash', 'terracelake', 'emeraldlake', 'shadowlake', 'buttelake', 'juniperlake')
+
+# fetch and convert data into an SPC
+sx <- fetchOSD(sx.list)
+SoilTaxonomyDendrogram(sx, cex.taxon.labels=0.8)
+```
+
+## Results and Discussion
+
+The Lassen National Park Soil Survey covers 127,000 acres with 379 different map units which
+includes 4 soil orders (Andisols, Entisols, Inceptisols, Histosols) composed of 8 sub orders which
+break into 18 great groups (Table 1,2,3). Andisols make up around 85% of the soils in the park
+(Table 2). Many of the map units are described at the series level of taxonomy, however, many
+are only mapped as their great group class, which suggests the recent and raw nature of Lassen
+and recent volcanic events (Table 4).
+
+The relationship between soil pH and CEC was explored and did not express a strong
+relationship, however a slight clustering of soils with low pH and high CEC can be seen in
+Juniperlake and Shadowlake series (Figure 1). The weak association between soil pH and CEC
+could be due to the interactions of soil clay content (% clay) and the influence of organic matter
+(%OM) known to be acidic and were investigated for further information. Soil CEC and percent
+clay content seem to exhibit a moderately strong positive relationship. CEC increased with
+increasing clay content from a CEC of 0.4 cmolc/kg-soil at 0% clay content to an average CEC of
+15 cmolc/kg-soil at around 4-6% clay and a maximum of 29 cmolc/kg at 2.8% clay content in the
+Juniperlake series (Figure 2).
+
+The relationship between %OM and CEC is very strong. CEC increased with %OM from 0.34
+cmolc/mg-soil at 0.6% OM to a maximum of 29 cmolc./kg at 16% OM (Figure 3). Soil CEC
+increased with soil %OM in a very linear fashion with the Juniperlake series at the high end with
+most horizons above 20 cmolc/kg-soil and 8% OM. Organic matter typically builds up at the
+surface and nd illuvial processes take time to draw organic matter and increase CEC at depth
+which is reflected in the soil CEC as a function depth graph (Figure 4). CEC decreased with depth
+in most profiles except the Buttelake series which increased dramatically in a lower 2Ab and
+2Bw1,b Horizons which are buried horizons from recent volcanic events and are expressing the
+same trend of decreasing CEC from the surface, except that it is a buried horizon (Figure 4).
+Andic soil properties were investigated using NaF pH, % glass, and Al + ½Fe ammonium oxalate
+extractable ion data. The relationship between NaF pH and soil CEC shows a weak to moderate
+positive relationship with the soils with a NaF pH above 10 typically had a CEC above a 5
+cmolc/kg-soil, which makes sense due to the NaF essentially exchanging with OH- ions bound
+on exchange sites of short range order minerals (allophane, imogolite) typically found in
+association with volcanic ashes.
+
+The relationship between phosphorus retention and NaF is clear with a strong linear positive
+relationship. The P retention in soils increased by 96% from a low of 6% retention and a NaF pH
+around 8.2 to 100% P retention at NaF pH 10.5 – 11.5 (Figure 7). Phosphorus % retention with
+NaF seems to indicate a deeper relationship with the short range order minerals (allophane,
+imogolite) and has been a subject of interest with soil scientists studying Andisols.
+The specifications of Andic soil properties as a diagnostic feature are explained in detail in the
+NRCS Guide to Soil Taxonomy and one of the key components is the % glass to ammonium
+oaxalate extractable Al + ½Fe fraction. Only 3 of the horizons from the “-lake” soil series
+described fell outside of the dotted cutoff line (Figure 7). All of the soils meet the the
+requirements for an andic diagnostic subsurface feature.
+
+The soil profile sketches created using the soilAQP package are useful tools for interpreting soil
+taxonomy and horizon information in a graphical way if you have a basic understanding of soil
+horizon designations (Figure 7). When the the graphics are re-ordered as a dendrogram the
+taxonomic relationships become clear and when coupled with horizon and color information a
+good amount of information can be readily interpreted from a soil scientist in potentia (Figure
+8). Soil profile sketches and dendrograms were developed to include another 9 soils from
+Lassen Volcanic Park to further illustrate the taxonomic relationships of Andisols in Lassen
+Volcanic National Park.
+
+## Conclusions
+
+A plethora of data exists for any soil scientist or soil enthusiast in a wide variety of formats.
+Sometimes it is quicker to just read the manual soil survey and input data directly into excel, if
+you know what you are looking for. Sometimes it is quicker and easier to download and
+aggregate multiple soils, if you know how to do what you want to do. Ultimately it is up to the
+user of the information to decide on how best to collect, organize, store, and synthesize new
+data from the previous efforts of hundreds, if not thousands of people. This research employed
+many different forms of data and used Microsoft Excel and R to interact and create useable
+information for this report.
+
+For the purposes of academic investigations and study utilizing or at least perusing all of the
+resources available is useful. This investigation of Andisols was able to determine the relative
+distribution of soil orders, sub orders, great groups and series within the park in a short amount
+of time using programmatic methods, which would have much more difficult if tabulated and
+calculated by hand (Tables 1-4). The Andic soil data that was not available on the soil datamart
+regarding the series of interest and was input manually from reading the soil survey report
+information in the series descriptions. The process took effort but yielded good results and nice
+graphs which proved useful for interpretation (Tables 5,6; Figures 1-7).
+The research into investigation and data collection methods of available soil survey data was a
+valuable exercise which served to improved the knowledge of specific soil physical and chemical
+relationships of andic soil properties. The research also highlighted the future work and goal to
+improve understanding of the R programming language and the soilAQP package to be able to
+readily develop actionable soil data in a short turnaround time.

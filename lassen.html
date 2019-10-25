@@ -360,133 +360,15 @@ $(document).ready(function () {
 </div>
 <div id="code" class="section level2">
 <h2>Code</h2>
-<pre class="r"><code>## load tidyverse
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
-## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;forcats&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## ── Conflicts ───────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>## load soilverse
-library(aqp)</code></pre>
-<pre><code>## Warning: package &#39;aqp&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## This is aqp 1.17</code></pre>
-<pre><code>## 
-## Attaching package: &#39;aqp&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     slice, union</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     union</code></pre>
-<pre class="r"><code>library(soilDB)</code></pre>
-<pre><code>## Warning: package &#39;soilDB&#39; was built under R version 3.5.2</code></pre>
-<pre class="r"><code>library(plyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## -------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     compact</code></pre>
-<pre class="r"><code>library(sharpshootR)
-library(knitr)</code></pre>
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.5.2</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre class="r"><code>## import lassen soils data csv
-lassenSoils &lt;- read_csv(&quot;LassenSoilData.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   soilSeries = col_character(),
-##   soilTaxonomy = col_character(),
-##   top = col_double(),
-##   bottom = col_double(),
-##   miid = col_double(),
-##   Hzn = col_character(),
-##   clay_pct = col_double(),
-##   sand_pct = col_double(),
-##   om_pct = col_double(),
-##   ph = col_double(),
-##   CEC = col_double(),
-##   bulkDensity = col_double(),
-##   NaF = col_double(),
-##   baseSat = col_double(),
-##   glass_pct = col_double(),
-##   p_retention = col_double(),
-##   Al_half_Fe = col_double()
-## )</code></pre>
+<p><img src="lassen_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <div id="soil-aqp-and-dendrograms" class="section level3">
 <h3>Soil AQP and Dendrograms</h3>
-<pre class="r"><code>## add functions to work with soil AQP data
-# compute total component percentages for the current block of components
-f.sum &lt;- function(i) {
-   n &lt;- nrow(i) # number of rows
-   s &lt;- sum(i$comppct_r) # total component percent
-   return(data.frame(pct=s, n=n)) # return the results
-}
-
-# pick the largest suborder from within each map unit
-f.largest &lt;- function(i) {
-   i.sorted &lt;- i[order(i$pct, decreasing=TRUE), ] # sort largest -&gt; smallest
-   top.suborder &lt;- i.sorted$taxsuborder[1] # get the largest suborder
-   top.suborder.pct &lt;- i.sorted$pct[1] # get the the corresponding component percent
-   return(data.frame(suborder=top.suborder, pct=top.suborder.pct)) # return results
-}</code></pre>
-<pre class="r"><code>## Query data from soilweb API
-
-
-# get map unit-level data
-q.1 &lt;- &quot;SELECT mukey, muacres
-FROM legend
-INNER JOIN mapunit ON mapunit.lkey = legend.lkey
-WHERE legend.areasymbol = &#39;CA789&#39;&quot;
-
-# get component-level data
-q.2 &lt;- &quot;SELECT 
-component.mukey, cokey, comppct_r, compname, taxclname, taxorder, taxsuborder, taxgrtgroup, taxsubgrp
-FROM legend
-INNER JOIN mapunit ON mapunit.lkey = legend.lkey
-LEFT OUTER JOIN component ON component.mukey = mapunit.mukey
-WHERE legend.areasymbol = &#39;CA789&#39;&quot;
-
-# submit queries
-mu &lt;- SDA_query(q.1)
-co &lt;- SDA_query(q.2)
-
-# tabulate percentage of suborder-level taxa within each map unit (mukey)
-l &lt;- comp.suborder.sums &lt;- ddply(co, .(mukey, taxsuborder), f.sum)
-
-# keep the largest suborder, and its associated total percentage
-comp.suborder &lt;- ddply(l, .(mukey), f.largest)
-
-# join the largest suborder (by map unit) to mu
-x &lt;- join(mu, comp.suborder, by=&#39;mukey&#39;)
-
-# get an effective map unit area via: muacres * pct/100
-x$effective.area &lt;- with(x, muacres * pct / 100)</code></pre>
-<pre class="r"><code>sort(round(tapply(x$effective.area, x$suborder, sum)))</code></pre>
 <pre><code>##  Aquents  Aquands Fluvents  Aquepts  Xerepts Orthents  Cryands  Xerands 
 ##       72      359      798     1636     3715     4628    16191    71778</code></pre>
-<pre class="r"><code>co %&gt;% group_by(compname) %&gt;% 
-         dplyr::summarise(n=n()) %&gt;% 
-         kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -749,17 +631,8 @@ x$effective.area &lt;- with(x, muacres * pct / 100)</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>p &lt;- sort(round(tapply(x$muacres, x$suborder, sum)))
-p</code></pre>
 <pre><code>##  Aquents  Aquands Fluvents  Aquepts  Xerepts Orthents  Cryands  Xerands 
 ##      145      449     1108     1914     4559     5505    23183    83454</code></pre>
-<pre class="r"><code>## attempt to make some summary stats for 
-
-co %&gt;% group_by(compname) %&gt;% 
-         dplyr::summarise( 
-                   n=n(),
-        n_d=n_distinct(taxorder)) %&gt;% 
-         kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1086,11 +959,6 @@ co %&gt;% group_by(compname) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>co %&gt;% group_by(taxorder) %&gt;% 
-         dplyr::summarise( 
-                   n=n(),
-        n_d=n_distinct(taxgrtgroup)) %&gt;% 
-         kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1127,10 +995,6 @@ co %&gt;% group_by(compname) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>co %&gt;% group_by(compname) %&gt;% 
-         dplyr::summarise( 
-                   n=n()) %&gt;% 
-         kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1393,10 +1257,6 @@ co %&gt;% group_by(compname) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>co %&gt;% filter(!is.na(taxgrtgroup)) %&gt;% group_by(taxorder, taxsuborder, taxgrtgroup) %&gt;% 
-         dplyr::summarise( n_d=n_distinct(taxgrtgroup),
-                   n=n()) %&gt;% 
-         kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1536,11 +1396,6 @@ co %&gt;% group_by(compname) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>co %&gt;% group_by(taxorder, taxsuborder) %&gt;% 
-         dplyr::summarise(
-                   n=n(),
-                   n_d=n_distinct(taxgrtgroup)) %&gt;%
-    kable()</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1613,20 +1468,6 @@ co %&gt;% group_by(compname) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>## set to new variable:
-
-t &lt;- co %&gt;% group_by(taxorder, taxsuborder) %&gt;% 
-         dplyr::summarise( 
-                   n=n() )
-
- 
- x %&gt;% group_by(suborder) %&gt;% 
-         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
-                   mean=mean(muacres, na.rm = TRUE),
-                   n=n()) %&gt;% 
-         kable()</code></pre>
-<pre><code>## Warning: Factor `suborder` contains implicit NA, consider using
-## `forcats::fct_explicit_na`</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1693,13 +1534,6 @@ t &lt;- co %&gt;% group_by(taxorder, taxsuborder) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>x %&gt;% group_by(suborder) %&gt;% 
-         dplyr::summarise(sum=sum(muacres, na.rm = TRUE),
-                   mean=mean(muacres, na.rm = TRUE),
-                   n=n()) %&gt;%
-  kable()</code></pre>
-<pre><code>## Warning: Factor `suborder` contains implicit NA, consider using
-## `forcats::fct_explicit_na`</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1766,7 +1600,6 @@ t &lt;- co %&gt;% group_by(taxorder, taxsuborder) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>kable(addmargins(table(co$taxsuborder)))</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -1817,37 +1650,23 @@ t &lt;- co %&gt;% group_by(taxorder, taxsuborder) %&gt;%
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>sl.list &lt;- c(&#39;terracelake&#39;, &#39;emeraldlake&#39;, &#39;shadowlake&#39;, &#39;buttelake&#39;, &#39;juniperlake&#39;)
-
-# fetch and convert data into an SPC
-sl &lt;- fetchOSD(sl.list)
-
-kssl.1 &lt;- fetchKSSL(&#39;terracelake&#39;)</code></pre>
-<pre><code>## query returned no data</code></pre>
-<pre class="r"><code>kssl.2 &lt;- fetchKSSL(&#39;emeraldlake&#39;)</code></pre>
-<pre><code>## 1 pedons loaded (0.02 Mb transferred)</code></pre>
-<pre class="r"><code>kssl.3 &lt;- fetchKSSL(&#39;shadowlake&#39;)</code></pre>
-<pre><code>## query returned no data</code></pre>
-<pre class="r"><code>kssl.4 &lt;- fetchKSSL(&#39;buttelake&#39;)</code></pre>
-<pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
-<pre class="r"><code>kssl.5 &lt;- fetchKSSL(&#39;juniperlake&#39;)</code></pre>
-<pre><code>## 1 pedons loaded (0.03 Mb transferred)</code></pre>
-<pre class="r"><code>g &lt;- rbind(kssl.2, kssl.4, kssl.5)</code></pre>
-<pre><code>## Warning: &#39;rbind&#39; is deprecated.
-## Use &#39;please use union()&#39; instead.
-## See help(&quot;Deprecated&quot;)</code></pre>
-<pre class="r"><code>table(g$taxmoistscl)</code></pre>
 <pre><code>## &lt; table of extent 0 &gt;</code></pre>
-<pre class="r"><code>g$taxonname &lt;- toupper(g$taxonname)
-
-par(mar=c(1,1,4,3))
-groupedProfilePlot(g, groups = &#39;taxorder&#39;, name=&#39;hzn_desgn&#39;,color=&#39;color&#39;, label=&#39;taxonname&#39;, id.style=&#39;side&#39;)</code></pre>
-<p><img src="lassen_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>plot(sl, groups = &#39;taxorder&#39;, name=&#39;hzname&#39;, cex.names=0.65, axis.line.offset=-5)</code></pre>
-<p><img src="lassen_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
-<pre class="r"><code>plot(g, label = &#39;taxonname&#39;,name=&#39;hzn_desgn&#39;, color=&#39;moist_soil_color&#39;)</code></pre>
-<p><img src="lassen_files/figure-html/unnamed-chunk-11-3.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-15-1.png" width="672" /><img src="lassen_files/figure-html/unnamed-chunk-15-2.png" width="672" /><img src="lassen_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<p><img src="lassen_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
+</div>
+<div id="results-and-discussion" class="section level2">
+<h2>Results and Discussion</h2>
+<p>The Lassen National Park Soil Survey covers 127,000 acres with 379 different map units which includes 4 soil orders (Andisols, Entisols, Inceptisols, Histosols) composed of 8 sub orders which break into 18 great groups (Table 1,2,3). Andisols make up around 85% of the soils in the park (Table 2). Many of the map units are described at the series level of taxonomy, however, many are only mapped as their great group class, which suggests the recent and raw nature of Lassen and recent volcanic events (Table 4).</p>
+<p>The relationship between soil pH and CEC was explored and did not express a strong relationship, however a slight clustering of soils with low pH and high CEC can be seen in Juniperlake and Shadowlake series (Figure 1). The weak association between soil pH and CEC could be due to the interactions of soil clay content (% clay) and the influence of organic matter (%OM) known to be acidic and were investigated for further information. Soil CEC and percent clay content seem to exhibit a moderately strong positive relationship. CEC increased with increasing clay content from a CEC of 0.4 cmolc/kg-soil at 0% clay content to an average CEC of 15 cmolc/kg-soil at around 4-6% clay and a maximum of 29 cmolc/kg at 2.8% clay content in the Juniperlake series (Figure 2).</p>
+<p>The relationship between %OM and CEC is very strong. CEC increased with %OM from 0.34 cmolc/mg-soil at 0.6% OM to a maximum of 29 cmolc./kg at 16% OM (Figure 3). Soil CEC increased with soil %OM in a very linear fashion with the Juniperlake series at the high end with most horizons above 20 cmolc/kg-soil and 8% OM. Organic matter typically builds up at the surface and nd illuvial processes take time to draw organic matter and increase CEC at depth which is reflected in the soil CEC as a function depth graph (Figure 4). CEC decreased with depth in most profiles except the Buttelake series which increased dramatically in a lower 2Ab and 2Bw1,b Horizons which are buried horizons from recent volcanic events and are expressing the same trend of decreasing CEC from the surface, except that it is a buried horizon (Figure 4). Andic soil properties were investigated using NaF pH, % glass, and Al + ½Fe ammonium oxalate extractable ion data. The relationship between NaF pH and soil CEC shows a weak to moderate positive relationship with the soils with a NaF pH above 10 typically had a CEC above a 5 cmolc/kg-soil, which makes sense due to the NaF essentially exchanging with OH- ions bound on exchange sites of short range order minerals (allophane, imogolite) typically found in association with volcanic ashes.</p>
+<p>The relationship between phosphorus retention and NaF is clear with a strong linear positive relationship. The P retention in soils increased by 96% from a low of 6% retention and a NaF pH around 8.2 to 100% P retention at NaF pH 10.5 – 11.5 (Figure 7). Phosphorus % retention with NaF seems to indicate a deeper relationship with the short range order minerals (allophane, imogolite) and has been a subject of interest with soil scientists studying Andisols. The specifications of Andic soil properties as a diagnostic feature are explained in detail in the NRCS Guide to Soil Taxonomy and one of the key components is the % glass to ammonium oaxalate extractable Al + ½Fe fraction. Only 3 of the horizons from the “-lake” soil series described fell outside of the dotted cutoff line (Figure 7). All of the soils meet the the requirements for an andic diagnostic subsurface feature.</p>
+<p>The soil profile sketches created using the soilAQP package are useful tools for interpreting soil taxonomy and horizon information in a graphical way if you have a basic understanding of soil horizon designations (Figure 7). When the the graphics are re-ordered as a dendrogram the taxonomic relationships become clear and when coupled with horizon and color information a good amount of information can be readily interpreted from a soil scientist in potentia (Figure 8). Soil profile sketches and dendrograms were developed to include another 9 soils from Lassen Volcanic Park to further illustrate the taxonomic relationships of Andisols in Lassen Volcanic National Park.</p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>A plethora of data exists for any soil scientist or soil enthusiast in a wide variety of formats. Sometimes it is quicker to just read the manual soil survey and input data directly into excel, if you know what you are looking for. Sometimes it is quicker and easier to download and aggregate multiple soils, if you know how to do what you want to do. Ultimately it is up to the user of the information to decide on how best to collect, organize, store, and synthesize new data from the previous efforts of hundreds, if not thousands of people. This research employed many different forms of data and used Microsoft Excel and R to interact and create useable information for this report.</p>
+<p>For the purposes of academic investigations and study utilizing or at least perusing all of the resources available is useful. This investigation of Andisols was able to determine the relative distribution of soil orders, sub orders, great groups and series within the park in a short amount of time using programmatic methods, which would have much more difficult if tabulated and calculated by hand (Tables 1-4). The Andic soil data that was not available on the soil datamart regarding the series of interest and was input manually from reading the soil survey report information in the series descriptions. The process took effort but yielded good results and nice graphs which proved useful for interpretation (Tables 5,6; Figures 1-7). The research into investigation and data collection methods of available soil survey data was a valuable exercise which served to improved the knowledge of specific soil physical and chemical relationships of andic soil properties. The research also highlighted the future work and goal to improve understanding of the R programming language and the soilAQP package to be able to readily develop actionable soil data in a short turnaround time.</p>
 </div>
 
 <p>Copyright &copy; 2019 Irfcorp, Inc. All rights reserved.</p>
