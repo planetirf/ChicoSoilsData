@@ -1,0 +1,48 @@
+---
+title: "Soils of Lassen Volcanic National Park"
+---
+
+## Introduction 
+
+Understanding the basic concepts of soil formation and genesis applied across landscapes is
+difficult, it requires traversing the landscape and lots of digging or researching soil survey maps.
+Finding, organizing, exploring and interpreting NRCS soil survey maps and data is a process
+which consumes a lot of time and has evolved through the years from a strict physical format
+into flexible digital formats. However, just because something is in a new digital format does
+not always make the job easier as often times digital formats are stored in multiple online
+databases and hosted with different web services.
+
+The tools available from the NRCS include very large and robust yet clunky web soil survey app
+(https://websoilsurvey.sc.egov.usda.gov/App/WebSoilSurvey.aspx), the soil data access portal
+(https://sdmdataaccess.nrcs.usda.gov/) offers links to backend SQL services and web queryable
+data from the data mart (https://ncsslabdatamart.sc.egov.usda.gov/) (Soil Survey, 2019). The
+California resource soil lab at UC Davis has built a few higher level services to make this process
+easier such as the SoilWeb apps (https://casoilresource.lawr.ucdavis.edu/soilweb-apps/)
+(Beaudette et al., 2009). Additionally, climate and meteorological information in stored in
+other databases which are accessed separately and must be joined with previous soil data
+resources.
+
+While the sheer access to raw data and information is enormous it takes a considerable amount
+of time to organize, clean, and produce usable graphics from. There has been considerable
+work in trying to simplify and improve workflow programmatically by the National Cooperative
+Soil Survey. The algorithms for quantitative pedology package (soilAQP) for the R programming
+language provides build in functions for querying, organizing, cleaning and producing tables
+graphs from the multitudes of NRCS soil survey data available, as well as methods for querying
+meteorological data (Beaudette et al., 2013) However, this requires an intermediate to
+advanced knowledge of the R programming language as well as knowledge of querying
+databases with SQL (R Core Team, 2013).
+
+A simple and more direct method can be employed by referencing the paper copies of the soil
+surveys produced by the NRCS, which are now also available in electronic PDF format and
+contain most of the information required by a soil scientist to explore and learn about a new
+and different landscapes in the United States.
+
+If a curious soil scientist in potentia desired to learn more about the soils in the Cascade Range
+of California north of the Sierra Nevada, Lassen Volcanic National Park seems like a good place
+to start. Lassen Volcanic National Park is home to all 4 volcano types (cinder cone, plug dome,
+shield, and stratovolcano). When coupled with other soil forming factors (climate, topography,
+organics, time), the potential for an innovative and engaging opportunity for understanding
+mechanisms of pedogenesis of soils in Lassen Volcanic National Park becomes clear especially
+of less common soils such an Andisols. The objectives of this research is to
+i) Learn about soil property relationships in Lassen Volcanic National Park Andisols
+ii) Evaluate the soil survey data and information available and methods of use

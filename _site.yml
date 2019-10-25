@@ -12,16 +12,22 @@ navbar:
     - text: "Chico State"
       icon: fa-gear
       menu:
-        - text: "Heading 1"
-        - text: "Page A"
+        - text: "Soil Science"
+        - text: "Rad Lab"
           href: page-a.html
-        - text: "Page B"
-          href: page-b.html
+        - text: "Lassen Soils"
+          href: Lassen.html
         - text: "---------"
-        - text: "Heading 2"
-        - text: "Page C"
+        - text: "Ceramics"
+        - text: "Artwork"
           href: page-c.html
-        - text: "Page D"
+        - text: "Science"
+          href: page-d.html
+        - text: "---------"
+        - text: "Anthropology"
+        - text: "Visual Anthropology"
+          href: page-c.html
+        - text: "Museum Studies"
           href: page-d.html
   right:
     - icon: fa-question fa-lg
