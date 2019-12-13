@@ -1,0 +1,404 @@
+---
+title: "ISLR_exercises"
+author: "Irfan Ainuddin"
+date: "12/13/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Chapter 2 #2
+
+#### 2. Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide n and p.
+
+#### (a) We collect a set of data on the top 500 firms in the US. For each firm we record profit, number of employees, industry and the CEO salary. We are interested in understanding which factors affect CEO salary.
+
+Classification, Inference. It looks like we are trying to evaluate the potential interactions between predictor factors (p=4, profit, number of employees, industree, CEO salary), of n = 500 observations, and are generating inferences related to CEO salary. 
+
+So do companies with higher number of employees make more money?
+
+
+#### (b) We are considering launching a new product and wish to know whether it will be a success or a failure. We collect data on 20 similar products that were previously launched. For each product we have recorded whether it was a success or failure, price charged for the product, marketing budget, competition price, and ten other variables.
+
+Classification, Prediction
+
+Based on, n = 20, other products, five predictors (p=14, success/failure, price, marketing budget, +10) are used to determine if a product is a success or failture. While interactions between predictors may influence the result, the only thing they care about is if the next product will be a success or fail.
+
+
+#### (c) We are interest in predicting the % change in the USD/Euro exchange rate in relation to the weekly changes in the world stock markets. Hence we collect weekly data for all of 2012. For each week we record the % change in the USD/Euro, the % change in the US market, the % change in the British market, and the % change in the German market.
+
+Regression. Prediction.
+
+Weekly data (n=52) based on the (p=4) variables, the % change in USD/EURO, and % chance in the US, British, and German Markets. Goal is predicting future change in markets based on test data which is two quantitative variables lends itself to regression.
+
+## Chapter 3.7 #15d
+
+#### Is there a non-linear relationship between crime rate (y) and your chosen predictor (you can use any continuous variable here)? Make scatterplot first and an educated guess. Then fit a simple linear model, and a model with a squared & cubic term. Compare R^2 and RMSE for each model and identify which model fits best. 
+
+```{r boston,}
+## get data
+boston <- MASS::Boston
+```
+
+```{r}
+## simplify vars
+black <- boston$black
+
+crim <- boston$crim
+```
+
+
+```{r #15d}
+
+## simple scatterplot to see potential non linear relationship.
+plot(boston$black,boston$crim)
+
+```
+
+
+```{r}
+
+## simple linear model between variables crim and black
+
+lm1 <- lm(crim~black)
+
+lm1
+
+summary(lm1)
+
+## R^2
+```
+
+
+```{r}
+## The R-squared value
+summary(lm1)$r.sq
+
+## The Root Mean Square Error (RMSE)
+summary(lm1)$sigma
+
+```
+
+```{r}
+## add model squared predictor from var
+black2 <- black * black
+
+lm2 <- lm(crim~black + black2)
+
+lm2
+
+summary(lm2)
+
+```
+
+```{r}
+## R^2
+summary(lm2)$r.sq
+##RSME
+summary(lm2)$sigma
+
+```
+
+```{r}
+## add model cubed predictor from var
+black3 <- black2 * black
+
+lm3 <- lm(crim~black + black2 + black3)
+
+lm3
+
+summary(lm3)
+
+```
+
+```{r}
+## R^2
+summary(lm3)$r.sq
+##RSME
+summary(lm3)$sigma
+
+```
+
+For the model {crime~black} the R^2 is 0.1482 and RMSE is 7.94615
+For the model {crime~black + black2} the R^2} is 0.1492 and RMSE is 7.949655
+For the model {crime~black + black2 + black3} the R^2 is 0.1498 and RMSE is 7.954643
+
+The R^2 value and RMSE is increasing with model complexity with the linear model being the lowest values, sugggesting there is no non-linear relationship between the variable black and crim.
+
+The simple linear model fits best.
+
+## Chapter 4.6 Lab Section
+
+#### Stock Market Data
+
+```{r}
+library(ISLR)
+```
+
+```{r}
+
+## set variable from ISLR data set
+smarket <-ISLR::Smarket
+
+## Basic Dataset Information
+
+## Inspect variable names
+names(smarket)
+
+## Inspect dimensions
+dim(smarket)
+
+## Summary Statistics?
+summary(smarket)
+```
+
+Summary information, 1250 observations of 9 variables related to stock market trading.
+
+```{r}
+## Inspect correlations using cor()
+## [,-9] removes direction column which is non-numeric
+cor(smarket [,-9])
+```
+
+Volume has the strongest correlation with year, lets plot it.
+
+```{r}
+plot(smarket$Volume)
+plot(smarket$Year,smarket$Volume)
+```
+
+## 4.6.2 Logistic Regression
+
+Fitting a generalized linear model, glm()
+
+```{r}
+glm.fits = glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data = smarket, family = binomial)
+
+summary(glm.fits)
+```
+
+Assess coefficients for the fitted model.
+
+```{r}
+coef(glm.fits)
+
+summary(glm.fits)$coef
+
+summary(glm.fits)$coef[,4]
+```
+
+Predict probability that the market will go up.
+
+```{r}
+glm.probs=predict(glm.fits,type="response")
+glm.probs[1:10]
+
+contrasts(smarket$Direction)
+```
+
+Convert predicted probabilities into class labels
+create a vector of predictions based on probabilities
+
+```{r}
+glm.pred=rep("Down",1250)
+glm.pred[glm.probs>.5]="Up"
+```
+
+Create table to display prediction results against test data
+```{r}
+table(glm.pred, smarket$Direction)
+
+mean(glm.pred==smarket$Direction)
+```
+
+100 - 52.2 = 47.8% = Training Error Rate, often times overly optimistic and under estimates test error rate.
+
+Lets build a model using training sets.
+
+```{r}
+train=(smarket$Year<2005)
+
+smarket.2005 = smarket[!train,]
+
+dim(smarket.2005)
+
+direction.2005 = smarket$Direction[!train]
+
+```
+
+Hmm... Complicated explanation.
+
+```{r}
+glm.fits1 = glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data = smarket, family = binomial, subset=train)
+
+glm.probs1 = predict(glm.fits1, smarket.2005,type="response")
+```
+
+glm.fits1 and glm.prob1 are trained and tested on different subsets of data, ie does 2001-2004 data help predict 2005 ?
+
+```{r}
+glm.pred1=rep("Down",252)
+glm.pred1[glm.probs1>.5]="Up"
+
+table(glm.pred1, direction.2005)
+
+mean(glm.pred1==direction.2005)
+
+mean(glm.pred1!=direction.2005)
+```
+
+test error rate is 52%
+
+
+Now fitting model with just lag1 and lag2, maybe it will improve error.
+```{r}
+glm.fits2 = glm(Direction~Lag1+Lag2, data = smarket, family = binomial, subset=train)
+
+glm.probs2 = predict(glm.fits2, smarket.2005,type="response")
+
+glm.pred2=rep("Down",252)
+glm.pred2[glm.probs2>.5]="Up"
+
+table(glm.pred2, direction.2005)
+
+mean(glm.pred2==direction.2005)
+
+mean(glm.pred2!=direction.2005)
+
+```
+
+Improved prediction rate of 56% accuracy rate, also when predicting up, is 58% accurate. Model is more accurate when predicting UP vs DOWN
+
+
+```{r}
+## Make a prediction using specific variable inputs.
+predict(glm.fits2, newdata=data.frame(Lag1=c(1.2,1.5),Lag2=c(1.1,-0.8)),type="response")
+```
+
+
+## 4.6.3 Linear Discriminant Analysis
+
+Create new model
+```{r}
+library(MASS)
+lda.fit=lda(Direction~Lag1+Lag2, data=smarket, subset=train)
+lda.fit
+```
+
+call predict with model
+
+```{r}
+lda.pred=predict(lda.fit, smarket.2005)
+names(lda.pred)
+
+lda.class=lda.pred$class
+
+table(lda.class,direction.2005)
+
+mean(lda.class==direction.2005)
+```
+
+Apply 50%  threshold (Bayseian ideal??)
+
+```{r}
+sum(lda.pred$posterior[,1]>=.5)
+
+sum(lda.pred$posterior[,1]<.5)
+
+```
+
+Probability is that the market sill decrease.
+```{r}
+lda.pred$posterior[1:20,1]
+
+lda.class[1:20]
+```
+
+
+Applying a higher threshold.
+```{r}
+sum(lda.pred$posterior[,1]>.9)
+```
+
+
+## 4.6.4 Quadtratic Discriminant Analysis
+
+Fit a QDA model to the smarket data
+
+```{r}
+qda.fit = qda(Direction~Lag1+Lag2, data=smarket, subset=train)
+qda.fit
+```
+
+predict class with qda
+
+```{r}
+qda.class = predict(qda.fit, smarket.2005)$class
+
+table(qda.class, direction.2005)
+
+mean(qda.class == direction.2005)
+```
+
+## 4.6.5 K Nearest Neighbors
+
+KNN requires 4 inputs: train.X, test.X, train.Direction, and a value for K, the number of nearest neighbors.
+
+train.X and test.X are matrices, requires binding lag 1 and lag 2 together.
+```{r}
+library(class)
+train.X = cbind(smarket$Lag1,smarket$Lag2)[train,]
+test.X = cbind(smarket$Lag1,smarket$Lag2)[!train,]
+train.Direction = smarket$Direction[train]
+```
+
+Set a random seed and apply knn prediction.
+```{r}
+set.seed(1)
+knn.pred = knn(train.X, test.X, train.Direction,k=1)
+table(knn.pred, direction.2005)
+
+
+```
+
+K = 1 is only 50% accurate.
+
+Increase with K=3.
+
+```{r}
+set.seed(1)
+knn.pred2 = knn(train.X, test.X, train.Direction,k=3)
+table(knn.pred2, direction.2005)
+
+mean(knn.pred2 == direction.2005)
+```
+
+OK,accuracy imrpoved to 53% lets keep increasing K to 5
+
+```{r}
+set.seed(1)
+knn.pred3 = knn(train.X, test.X, train.Direction,k=5)
+table(knn.pred3, direction.2005)
+
+mean(knn.pred3 == direction.2005)
+```
+
+Ohh nooo!! 48% It loses prediction accuracy, does this suggest overfitting? with k = 5.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

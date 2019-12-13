@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Irfan Ainuddin" />
+
+<meta name="date" content="2019-12-13" />
+
+<title>ISLR_exercises</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Planet Irf</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Chico State
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Soil Science</li>
+    <li>
+      <a href="page-a.html">Rad Lab</a>
+    </li>
+    <li>
+      <a href="Lassen.html">Lassen Soils</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Ceramics</li>
+    <li>
+      <a href="page-c.html">Artwork</a>
+    </li>
+    <li>
+      <a href="MATH685-HW.html">Science</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Anthropology</li>
+    <li>
+      <a href="page-c.html">Visual Anthropology</a>
+    </li>
+    <li>
+      <a href="page-d.html">Museum Studies</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://planetirf.org">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ISLR_exercises</h1>
+<h4 class="author">Irfan Ainuddin</h4>
+<h4 class="date">12/13/2019</h4>
+
+</div>
+
+
+<div id="chapter-2-2" class="section level2">
+<h2>Chapter 2 #2</h2>
+<div id="explain-whether-each-scenario-is-a-classification-or-regression-problem-and-indicate-whether-we-are-most-interested-in-inference-or-prediction.-finally-provide-n-and-p." class="section level4">
+<h4>2. Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide n and p.</h4>
+</div>
+<div id="a-we-collect-a-set-of-data-on-the-top-500-firms-in-the-us.-for-each-firm-we-record-profit-number-of-employees-industry-and-the-ceo-salary.-we-are-interested-in-understanding-which-factors-affect-ceo-salary." class="section level4">
+<h4>(a) We collect a set of data on the top 500 firms in the US. For each firm we record profit, number of employees, industry and the CEO salary. We are interested in understanding which factors affect CEO salary.</h4>
+<p>Classification, Inference. It looks like we are trying to evaluate the potential interactions between predictor factors (p=4, profit, number of employees, industree, CEO salary), of n = 500 observations, and are generating inferences related to CEO salary.</p>
+<p>So do companies with higher number of employees make more money?</p>
+</div>
+<div id="b-we-are-considering-launching-a-new-product-and-wish-to-know-whether-it-will-be-a-success-or-a-failure.-we-collect-data-on-20-similar-products-that-were-previously-launched.-for-each-product-we-have-recorded-whether-it-was-a-success-or-failure-price-charged-for-the-product-marketing-budget-competition-price-and-ten-other-variables." class="section level4">
+<h4>(b) We are considering launching a new product and wish to know whether it will be a success or a failure. We collect data on 20 similar products that were previously launched. For each product we have recorded whether it was a success or failure, price charged for the product, marketing budget, competition price, and ten other variables.</h4>
+<p>Classification, Prediction</p>
+<p>Based on, n = 20, other products, five predictors (p=14, success/failure, price, marketing budget, +10) are used to determine if a product is a success or failture. While interactions between predictors may influence the result, the only thing they care about is if the next product will be a success or fail.</p>
+</div>
+<div id="c-we-are-interest-in-predicting-the-change-in-the-usdeuro-exchange-rate-in-relation-to-the-weekly-changes-in-the-world-stock-markets.-hence-we-collect-weekly-data-for-all-of-2012.-for-each-week-we-record-the-change-in-the-usdeuro-the-change-in-the-us-market-the-change-in-the-british-market-and-the-change-in-the-german-market." class="section level4">
+<h4>(c) We are interest in predicting the % change in the USD/Euro exchange rate in relation to the weekly changes in the world stock markets. Hence we collect weekly data for all of 2012. For each week we record the % change in the USD/Euro, the % change in the US market, the % change in the British market, and the % change in the German market.</h4>
+<p>Regression. Prediction.</p>
+<p>Weekly data (n=52) based on the (p=4) variables, the % change in USD/EURO, and % chance in the US, British, and German Markets. Goal is predicting future change in markets based on test data which is two quantitative variables lends itself to regression.</p>
+</div>
+</div>
+<div id="chapter-3.7-15d" class="section level2">
+<h2>Chapter 3.7 #15d</h2>
+<div id="is-there-a-non-linear-relationship-between-crime-rate-y-and-your-chosen-predictor-you-can-use-any-continuous-variable-here-make-scatterplot-first-and-an-educated-guess.-then-fit-a-simple-linear-model-and-a-model-with-a-squared-cubic-term.-compare-r2-and-rmse-for-each-model-and-identify-which-model-fits-best." class="section level4">
+<h4>Is there a non-linear relationship between crime rate (y) and your chosen predictor (you can use any continuous variable here)? Make scatterplot first and an educated guess. Then fit a simple linear model, and a model with a squared &amp; cubic term. Compare R^2 and RMSE for each model and identify which model fits best.</h4>
+<pre class="r"><code>## get data
+boston &lt;- MASS::Boston</code></pre>
+<pre class="r"><code>## simplify vars
+black &lt;- boston$black
+
+crim &lt;- boston$crim</code></pre>
+<pre class="r"><code>## simple scatterplot to see potential non linear relationship.
+plot(boston$black,boston$crim)</code></pre>
+<p><img src="MATH685-HW_files/figure-html/#15d-1.png" width="672" /></p>
+<pre class="r"><code>## simple linear model between variables crim and black
+
+lm1 &lt;- lm(crim~black)
+
+lm1</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black)
+## 
+## Coefficients:
+## (Intercept)        black  
+##    16.55353     -0.03628</code></pre>
+<pre class="r"><code>summary(lm1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.756  -2.299  -2.095  -1.296  86.822 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 16.553529   1.425903  11.609   &lt;2e-16 ***
+## black       -0.036280   0.003873  -9.367   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 7.946 on 504 degrees of freedom
+## Multiple R-squared:  0.1483, Adjusted R-squared:  0.1466 
+## F-statistic: 87.74 on 1 and 504 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## R^2</code></pre>
+<pre class="r"><code>## The R-squared value
+summary(lm1)$r.sq</code></pre>
+<pre><code>## [1] 0.1482742</code></pre>
+<pre class="r"><code>## The Root Mean Square Error (RMSE)
+summary(lm1)$sigma</code></pre>
+<pre><code>## [1] 7.94615</code></pre>
+<pre class="r"><code>## add model squared predictor from var
+black2 &lt;- black * black
+
+lm2 &lt;- lm(crim~black + black2)
+
+lm2</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black + black2)
+## 
+## Coefficients:
+## (Intercept)        black       black2  
+##   1.742e+01   -5.186e-02    3.458e-05</code></pre>
+<pre class="r"><code>summary(lm2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black + black2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.696  -2.353  -2.202  -1.366  86.688 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.742e+01  1.843e+00   9.455   &lt;2e-16 ***
+## black       -5.186e-02  2.125e-02  -2.440    0.015 *  
+## black2       3.458e-05  4.638e-05   0.745    0.456    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 7.95 on 503 degrees of freedom
+## Multiple R-squared:  0.1492, Adjusted R-squared:  0.1458 
+## F-statistic: 44.11 on 2 and 503 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## R^2
+summary(lm2)$r.sq</code></pre>
+<pre><code>## [1] 0.1492143</code></pre>
+<pre class="r"><code>##RSME
+summary(lm2)$sigma</code></pre>
+<pre><code>## [1] 7.949655</code></pre>
+<pre class="r"><code>## add model cubed predictor from var
+black3 &lt;- black2 * black
+
+lm3 &lt;- lm(crim~black + black2 + black3)
+
+lm3</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black + black2 + black3)
+## 
+## Coefficients:
+## (Intercept)        black       black2       black3  
+##   1.826e+01   -8.356e-02    2.137e-04   -2.652e-07</code></pre>
+<pre class="r"><code>summary(lm3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = crim ~ black + black2 + black3)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.096  -2.343  -2.128  -1.439  86.790 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.826e+01  2.305e+00   7.924  1.5e-14 ***
+## black       -8.356e-02  5.633e-02  -1.483    0.139    
+## black2       2.137e-04  2.984e-04   0.716    0.474    
+## black3      -2.652e-07  4.364e-07  -0.608    0.544    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 7.955 on 502 degrees of freedom
+## Multiple R-squared:  0.1498, Adjusted R-squared:  0.1448 
+## F-statistic: 29.49 on 3 and 502 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## R^2
+summary(lm3)$r.sq</code></pre>
+<pre><code>## [1] 0.1498398</code></pre>
+<pre class="r"><code>##RSME
+summary(lm3)$sigma</code></pre>
+<pre><code>## [1] 7.954643</code></pre>
+<p>For the model {crime~black} the R^2 is 0.1482 and RMSE is 7.94615 For the model {crime~black + black2} the R^2} is 0.1492 and RMSE is 7.949655 For the model {crime~black + black2 + black3} the R^2 is 0.1498 and RMSE is 7.954643</p>
+<p>The R^2 value and RMSE is increasing with model complexity with the linear model being the lowest values, sugggesting there is no non-linear relationship between the variable black and crim.</p>
+<p>The simple linear model fits best.</p>
+</div>
+</div>
+<div id="chapter-4.6-lab-section" class="section level2">
+<h2>Chapter 4.6 Lab Section</h2>
+<div id="stock-market-data" class="section level4">
+<h4>Stock Market Data</h4>
+<pre class="r"><code>library(ISLR)</code></pre>
+<pre class="r"><code>## set variable from ISLR data set
+smarket &lt;-ISLR::Smarket
+
+## Basic Dataset Information
+
+## Inspect variable names
+names(smarket)</code></pre>
+<pre><code>## [1] &quot;Year&quot;      &quot;Lag1&quot;      &quot;Lag2&quot;      &quot;Lag3&quot;      &quot;Lag4&quot;      &quot;Lag5&quot;     
+## [7] &quot;Volume&quot;    &quot;Today&quot;     &quot;Direction&quot;</code></pre>
+<pre class="r"><code>## Inspect dimensions
+dim(smarket)</code></pre>
+<pre><code>## [1] 1250    9</code></pre>
+<pre class="r"><code>## Summary Statistics?
+summary(smarket)</code></pre>
+<pre><code>##       Year           Lag1                Lag2          
+##  Min.   :2001   Min.   :-4.922000   Min.   :-4.922000  
+##  1st Qu.:2002   1st Qu.:-0.639500   1st Qu.:-0.639500  
+##  Median :2003   Median : 0.039000   Median : 0.039000  
+##  Mean   :2003   Mean   : 0.003834   Mean   : 0.003919  
+##  3rd Qu.:2004   3rd Qu.: 0.596750   3rd Qu.: 0.596750  
+##  Max.   :2005   Max.   : 5.733000   Max.   : 5.733000  
+##       Lag3                Lag4                Lag5         
+##  Min.   :-4.922000   Min.   :-4.922000   Min.   :-4.92200  
+##  1st Qu.:-0.640000   1st Qu.:-0.640000   1st Qu.:-0.64000  
+##  Median : 0.038500   Median : 0.038500   Median : 0.03850  
+##  Mean   : 0.001716   Mean   : 0.001636   Mean   : 0.00561  
+##  3rd Qu.: 0.596750   3rd Qu.: 0.596750   3rd Qu.: 0.59700  
+##  Max.   : 5.733000   Max.   : 5.733000   Max.   : 5.73300  
+##      Volume           Today           Direction 
+##  Min.   :0.3561   Min.   :-4.922000   Down:602  
+##  1st Qu.:1.2574   1st Qu.:-0.639500   Up  :648  
+##  Median :1.4229   Median : 0.038500             
+##  Mean   :1.4783   Mean   : 0.003138             
+##  3rd Qu.:1.6417   3rd Qu.: 0.596750             
+##  Max.   :3.1525   Max.   : 5.733000</code></pre>
+<p>Summary information, 1250 observations of 9 variables related to stock market trading.</p>
+<pre class="r"><code>## Inspect correlations using cor()
+## [,-9] removes direction column which is non-numeric
+cor(smarket [,-9])</code></pre>
+<pre><code>##              Year         Lag1         Lag2         Lag3         Lag4
+## Year   1.00000000  0.029699649  0.030596422  0.033194581  0.035688718
+## Lag1   0.02969965  1.000000000 -0.026294328 -0.010803402 -0.002985911
+## Lag2   0.03059642 -0.026294328  1.000000000 -0.025896670 -0.010853533
+## Lag3   0.03319458 -0.010803402 -0.025896670  1.000000000 -0.024051036
+## Lag4   0.03568872 -0.002985911 -0.010853533 -0.024051036  1.000000000
+## Lag5   0.02978799 -0.005674606 -0.003557949 -0.018808338 -0.027083641
+## Volume 0.53900647  0.040909908 -0.043383215 -0.041823686 -0.048414246
+## Today  0.03009523 -0.026155045 -0.010250033 -0.002447647 -0.006899527
+##                Lag5      Volume        Today
+## Year    0.029787995  0.53900647  0.030095229
+## Lag1   -0.005674606  0.04090991 -0.026155045
+## Lag2   -0.003557949 -0.04338321 -0.010250033
+## Lag3   -0.018808338 -0.04182369 -0.002447647
+## Lag4   -0.027083641 -0.04841425 -0.006899527
+## Lag5    1.000000000 -0.02200231 -0.034860083
+## Volume -0.022002315  1.00000000  0.014591823
+## Today  -0.034860083  0.01459182  1.000000000</code></pre>
+<p>Volume has the strongest correlation with year, lets plot it.</p>
+<pre class="r"><code>plot(smarket$Volume)</code></pre>
+<p><img src="MATH685-HW_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>plot(smarket$Year,smarket$Volume)</code></pre>
+<p><img src="MATH685-HW_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>4.6.2 Logistic Regression</h2>
+<p>Fitting a generalized linear model, glm()</p>
+<pre class="r"><code>glm.fits = glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data = smarket, family = binomial)
+
+summary(glm.fits)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + 
+##     Volume, family = binomial, data = smarket)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -1.446  -1.203   1.065   1.145   1.326  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -0.126000   0.240736  -0.523    0.601
+## Lag1        -0.073074   0.050167  -1.457    0.145
+## Lag2        -0.042301   0.050086  -0.845    0.398
+## Lag3         0.011085   0.049939   0.222    0.824
+## Lag4         0.009359   0.049974   0.187    0.851
+## Lag5         0.010313   0.049511   0.208    0.835
+## Volume       0.135441   0.158360   0.855    0.392
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1731.2  on 1249  degrees of freedom
+## Residual deviance: 1727.6  on 1243  degrees of freedom
+## AIC: 1741.6
+## 
+## Number of Fisher Scoring iterations: 3</code></pre>
+<p>Assess coefficients for the fitted model.</p>
+<pre class="r"><code>coef(glm.fits)</code></pre>
+<pre><code>##  (Intercept)         Lag1         Lag2         Lag3         Lag4 
+## -0.126000257 -0.073073746 -0.042301344  0.011085108  0.009358938 
+##         Lag5       Volume 
+##  0.010313068  0.135440659</code></pre>
+<pre class="r"><code>summary(glm.fits)$coef</code></pre>
+<pre><code>##                 Estimate Std. Error    z value  Pr(&gt;|z|)
+## (Intercept) -0.126000257 0.24073574 -0.5233966 0.6006983
+## Lag1        -0.073073746 0.05016739 -1.4565986 0.1452272
+## Lag2        -0.042301344 0.05008605 -0.8445733 0.3983491
+## Lag3         0.011085108 0.04993854  0.2219750 0.8243333
+## Lag4         0.009358938 0.04997413  0.1872757 0.8514445
+## Lag5         0.010313068 0.04951146  0.2082966 0.8349974
+## Volume       0.135440659 0.15835970  0.8552723 0.3924004</code></pre>
+<pre class="r"><code>summary(glm.fits)$coef[,4]</code></pre>
+<pre><code>## (Intercept)        Lag1        Lag2        Lag3        Lag4        Lag5 
+##   0.6006983   0.1452272   0.3983491   0.8243333   0.8514445   0.8349974 
+##      Volume 
+##   0.3924004</code></pre>
+<p>Predict probability that the market will go up.</p>
+<pre class="r"><code>glm.probs=predict(glm.fits,type=&quot;response&quot;)
+glm.probs[1:10]</code></pre>
+<pre><code>##         1         2         3         4         5         6         7 
+## 0.5070841 0.4814679 0.4811388 0.5152224 0.5107812 0.5069565 0.4926509 
+##         8         9        10 
+## 0.5092292 0.5176135 0.4888378</code></pre>
+<pre class="r"><code>contrasts(smarket$Direction)</code></pre>
+<pre><code>##      Up
+## Down  0
+## Up    1</code></pre>
+<p>Convert predicted probabilities into class labels create a vector of predictions based on probabilities</p>
+<pre class="r"><code>glm.pred=rep(&quot;Down&quot;,1250)
+glm.pred[glm.probs&gt;.5]=&quot;Up&quot;</code></pre>
+<p>Create table to display prediction results against test data</p>
+<pre class="r"><code>table(glm.pred, smarket$Direction)</code></pre>
+<pre><code>##         
+## glm.pred Down  Up
+##     Down  145 141
+##     Up    457 507</code></pre>
+<pre class="r"><code>mean(glm.pred==smarket$Direction)</code></pre>
+<pre><code>## [1] 0.5216</code></pre>
+<p>100 - 52.2 = 47.8% = Training Error Rate, often times overly optimistic and under estimates test error rate.</p>
+<p>Lets build a model using training sets.</p>
+<pre class="r"><code>train=(smarket$Year&lt;2005)
+
+smarket.2005 = smarket[!train,]
+
+dim(smarket.2005)</code></pre>
+<pre><code>## [1] 252   9</code></pre>
+<pre class="r"><code>direction.2005 = smarket$Direction[!train]</code></pre>
+<p>Hmm… Complicated explanation.</p>
+<pre class="r"><code>glm.fits1 = glm(Direction~Lag1+Lag2+Lag3+Lag4+Lag5+Volume, data = smarket, family = binomial, subset=train)
+
+glm.probs1 = predict(glm.fits1, smarket.2005,type=&quot;response&quot;)</code></pre>
+<p>glm.fits1 and glm.prob1 are trained and tested on different subsets of data, ie does 2001-2004 data help predict 2005 ?</p>
+<pre class="r"><code>glm.pred1=rep(&quot;Down&quot;,252)
+glm.pred1[glm.probs1&gt;.5]=&quot;Up&quot;
+
+table(glm.pred1, direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## glm.pred1 Down Up
+##      Down   77 97
+##      Up     34 44</code></pre>
+<pre class="r"><code>mean(glm.pred1==direction.2005)</code></pre>
+<pre><code>## [1] 0.4801587</code></pre>
+<pre class="r"><code>mean(glm.pred1!=direction.2005)</code></pre>
+<pre><code>## [1] 0.5198413</code></pre>
+<p>test error rate is 52%</p>
+<p>Now fitting model with just lag1 and lag2, maybe it will improve error.</p>
+<pre class="r"><code>glm.fits2 = glm(Direction~Lag1+Lag2, data = smarket, family = binomial, subset=train)
+
+glm.probs2 = predict(glm.fits2, smarket.2005,type=&quot;response&quot;)
+
+glm.pred2=rep(&quot;Down&quot;,252)
+glm.pred2[glm.probs2&gt;.5]=&quot;Up&quot;
+
+table(glm.pred2, direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## glm.pred2 Down  Up
+##      Down   35  35
+##      Up     76 106</code></pre>
+<pre class="r"><code>mean(glm.pred2==direction.2005)</code></pre>
+<pre><code>## [1] 0.5595238</code></pre>
+<pre class="r"><code>mean(glm.pred2!=direction.2005)</code></pre>
+<pre><code>## [1] 0.4404762</code></pre>
+<p>Improved prediction rate of 56% accuracy rate, also when predicting up, is 58% accurate. Model is more accurate when predicting UP vs DOWN</p>
+<pre class="r"><code>## Make a prediction using specific variable inputs.
+predict(glm.fits2, newdata=data.frame(Lag1=c(1.2,1.5),Lag2=c(1.1,-0.8)),type=&quot;response&quot;)</code></pre>
+<pre><code>##         1         2 
+## 0.4791462 0.4960939</code></pre>
+</div>
+<div id="linear-discriminant-analysis" class="section level2">
+<h2>4.6.3 Linear Discriminant Analysis</h2>
+<p>Create new model</p>
+<pre class="r"><code>library(MASS)</code></pre>
+<pre><code>## Warning: package &#39;MASS&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="r"><code>lda.fit=lda(Direction~Lag1+Lag2, data=smarket, subset=train)
+lda.fit</code></pre>
+<pre><code>## Call:
+## lda(Direction ~ Lag1 + Lag2, data = smarket, subset = train)
+## 
+## Prior probabilities of groups:
+##     Down       Up 
+## 0.491984 0.508016 
+## 
+## Group means:
+##             Lag1        Lag2
+## Down  0.04279022  0.03389409
+## Up   -0.03954635 -0.03132544
+## 
+## Coefficients of linear discriminants:
+##             LD1
+## Lag1 -0.6420190
+## Lag2 -0.5135293</code></pre>
+<p>call predict with model</p>
+<pre class="r"><code>lda.pred=predict(lda.fit, smarket.2005)
+names(lda.pred)</code></pre>
+<pre><code>## [1] &quot;class&quot;     &quot;posterior&quot; &quot;x&quot;</code></pre>
+<pre class="r"><code>lda.class=lda.pred$class
+
+table(lda.class,direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## lda.class Down  Up
+##      Down   35  35
+##      Up     76 106</code></pre>
+<pre class="r"><code>mean(lda.class==direction.2005)</code></pre>
+<pre><code>## [1] 0.5595238</code></pre>
+<p>Apply 50% threshold (Bayseian ideal??)</p>
+<pre class="r"><code>sum(lda.pred$posterior[,1]&gt;=.5)</code></pre>
+<pre><code>## [1] 70</code></pre>
+<pre class="r"><code>sum(lda.pred$posterior[,1]&lt;.5)</code></pre>
+<pre><code>## [1] 182</code></pre>
+<p>Probability is that the market sill decrease.</p>
+<pre class="r"><code>lda.pred$posterior[1:20,1]</code></pre>
+<pre><code>##       999      1000      1001      1002      1003      1004      1005 
+## 0.4901792 0.4792185 0.4668185 0.4740011 0.4927877 0.4938562 0.4951016 
+##      1006      1007      1008      1009      1010      1011      1012 
+## 0.4872861 0.4907013 0.4844026 0.4906963 0.5119988 0.4895152 0.4706761 
+##      1013      1014      1015      1016      1017      1018 
+## 0.4744593 0.4799583 0.4935775 0.5030894 0.4978806 0.4886331</code></pre>
+<pre class="r"><code>lda.class[1:20]</code></pre>
+<pre><code>##  [1] Up   Up   Up   Up   Up   Up   Up   Up   Up   Up   Up   Down Up   Up  
+## [15] Up   Up   Up   Down Up   Up  
+## Levels: Down Up</code></pre>
+<p>Applying a higher threshold.</p>
+<pre class="r"><code>sum(lda.pred$posterior[,1]&gt;.9)</code></pre>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div id="quadtratic-discriminant-analysis" class="section level2">
+<h2>4.6.4 Quadtratic Discriminant Analysis</h2>
+<p>Fit a QDA model to the smarket data</p>
+<pre class="r"><code>qda.fit = qda(Direction~Lag1+Lag2, data=smarket, subset=train)
+qda.fit</code></pre>
+<pre><code>## Call:
+## qda(Direction ~ Lag1 + Lag2, data = smarket, subset = train)
+## 
+## Prior probabilities of groups:
+##     Down       Up 
+## 0.491984 0.508016 
+## 
+## Group means:
+##             Lag1        Lag2
+## Down  0.04279022  0.03389409
+## Up   -0.03954635 -0.03132544</code></pre>
+<p>predict class with qda</p>
+<pre class="r"><code>qda.class = predict(qda.fit, smarket.2005)$class
+
+table(qda.class, direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## qda.class Down  Up
+##      Down   30  20
+##      Up     81 121</code></pre>
+<pre class="r"><code>mean(qda.class == direction.2005)</code></pre>
+<pre><code>## [1] 0.5992063</code></pre>
+</div>
+<div id="k-nearest-neighbors" class="section level2">
+<h2>4.6.5 K Nearest Neighbors</h2>
+<p>KNN requires 4 inputs: train.X, test.X, train.Direction, and a value for K, the number of nearest neighbors.</p>
+<p>train.X and test.X are matrices, requires binding lag 1 and lag 2 together.</p>
+<pre class="r"><code>library(class)</code></pre>
+<pre><code>## Warning: package &#39;class&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>train.X = cbind(smarket$Lag1,smarket$Lag2)[train,]
+test.X = cbind(smarket$Lag1,smarket$Lag2)[!train,]
+train.Direction = smarket$Direction[train]</code></pre>
+<p>Set a random seed and apply knn prediction.</p>
+<pre class="r"><code>set.seed(1)
+knn.pred = knn(train.X, test.X, train.Direction,k=1)
+table(knn.pred, direction.2005)</code></pre>
+<pre><code>##         direction.2005
+## knn.pred Down Up
+##     Down   43 58
+##     Up     68 83</code></pre>
+<p>K = 1 is only 50% accurate.</p>
+<p>Increase with K=3.</p>
+<pre class="r"><code>set.seed(1)
+knn.pred2 = knn(train.X, test.X, train.Direction,k=3)
+table(knn.pred2, direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## knn.pred2 Down Up
+##      Down   48 55
+##      Up     63 86</code></pre>
+<pre class="r"><code>mean(knn.pred2 == direction.2005)</code></pre>
+<pre><code>## [1] 0.531746</code></pre>
+<p>OK,accuracy imrpoved to 53% lets keep increasing K to 5</p>
+<pre class="r"><code>set.seed(1)
+knn.pred3 = knn(train.X, test.X, train.Direction,k=5)
+table(knn.pred3, direction.2005)</code></pre>
+<pre><code>##          direction.2005
+## knn.pred3 Down Up
+##      Down   40 59
+##      Up     71 82</code></pre>
+<pre class="r"><code>mean(knn.pred3 == direction.2005)</code></pre>
+<pre><code>## [1] 0.484127</code></pre>
+<p>Ohh nooo!! 48% It loses prediction accuracy, does this suggest overfitting? with k = 5.</p>
+</div>
+
+<p>Copyright &copy; 2019 Irfcorp, Inc. All rights reserved.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
