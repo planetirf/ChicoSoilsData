@@ -6,9 +6,8 @@ navbar:
     - text: "Home"
       icon: fa-home
       href: index.html
-    - text: "About"
-      icon: fa-info
-      href: about.html
+    - text: "My Projects"
+      href: project.html
     - text: "Chico State"
       icon: fa-gear
       menu:
@@ -32,7 +31,9 @@ navbar:
   right:
     - icon: fa-question fa-lg
       href: https://planetirf.org
-      
+    - text: "About"
+      icon: fa-info
+      href: about.html     
 
 
 output:
